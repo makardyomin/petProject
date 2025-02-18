@@ -22,10 +22,6 @@ public class ProjectService {
         this.projectRepository = repository;
     }
 
-    // public Project createProject(Project project) {
-    //    return projectRepository.save(project);
-    // }
-
     /**
      * get all.
      ** @return list

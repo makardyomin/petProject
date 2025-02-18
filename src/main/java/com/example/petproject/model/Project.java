@@ -79,13 +79,4 @@ public class Project {
     public void setAmountOfFurnaces(final Integer amount) {
         this.amountOfFurnaces = amount;
     }
-
-    /**
-     * search by id.
-     ** @param searchId of project
-     ** @return this project
-     */
-    public Project findById(final Long searchId) {
-        return this;
-    }
 }

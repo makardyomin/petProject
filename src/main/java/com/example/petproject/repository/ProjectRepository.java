@@ -13,19 +13,19 @@ public class ProjectRepository {
     /**
      * long id.
      */
-    private final long a1 = 0;
+    private static final long A1 = 0;
     /**
      * project1.
      */
-    private final Project project1 = new Project("Project1", 2, a1);
+    private final Project project1 = new Project("Project1", 2, A1);
     /**
      * project2.
      */
-    private final Project project2 = new Project("Project2", 3, a1 + 1);
+    private final Project project2 = new Project("Project2", 3, A1 + 1);
     /**
      * project3.
      */
-    private final Project project3 = new Project("Project3", 2, a1 + 2);
+    private final Project project3 = new Project("Project3", 2, A1 + 2);
 
     /**
      * find by param.
