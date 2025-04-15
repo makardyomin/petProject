@@ -1,8 +1,8 @@
 package com.example.petproject.repository;
 
-import com.example.petproject.model.Project;
+import com.example.petproject.model.Material;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project, Long> {}
+public interface MaterialRepository extends JpaRepository<Material, Long> {}

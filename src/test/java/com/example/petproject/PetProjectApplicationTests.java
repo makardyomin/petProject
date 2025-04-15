@@ -1,6 +1,6 @@
 package com.example.petproject;
+import com.example.petproject.dto.ProjectDTO;
 import com.example.petproject.service.ProjectService;
-import com.example.petproject.model.Project;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +15,7 @@ class PetProjectApplicationTests {
     @Test
     void testGetProjectById() {
         final long A1 = 0;
-        Project project = projectService.getProjectById(A1);
+        ProjectDTO project = projectService.getProjectById(A1);
         assertNotNull(project);
     }
 }
