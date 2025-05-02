@@ -21,15 +21,6 @@ public class Cache<T> extends LinkedHashMap<String, T> {
         return keyTracker.getOrDefault(id, null);
     }
 
-    public void update(Long id, T value) {
-        Set<String> cacheKeys = keyTracker.getOrDefault(id, null);
-        if (cacheKeys != null) {
-            for (String cacheKey : cacheKeys) {
-                super.put(cacheKey, value);
-            }
-        }
-    }
-
     public void trackKey(Long id, String key) {
         keyTracker.computeIfAbsent(id, k -> new HashSet<>()).add(key);
     }
