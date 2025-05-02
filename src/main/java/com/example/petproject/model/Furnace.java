@@ -29,7 +29,17 @@ public class Furnace {
     @Setter
     @Getter
     @Column(nullable = false)
+    private String name;
+
+    @Setter
+    @Getter
+    @Column(nullable = false)
     private String type;
+
+    @Setter
+    @Getter
+    @Column(nullable = false)
+    private String environmentType;
 
     @Setter
     @Getter
@@ -48,10 +58,6 @@ public class Furnace {
 
     // Constructors, getters, setters
     public Furnace() {}
-
-    public Furnace(String type) {
-        this.type = type;
-    }
 
     public List<Material> getMaterials() {
         return materialIds;

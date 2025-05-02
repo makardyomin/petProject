@@ -1,17 +1,17 @@
 package com.example.petproject.dto;
+
 import com.example.petproject.model.Furnace;
 import com.example.petproject.model.Material;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class FurnaceDTO {
+public class FurnaceDto {
     // Getters and Setters
     @Getter
     @Setter
@@ -24,7 +24,7 @@ public class FurnaceDTO {
     private Long projectId; // ID of the associated project
     private List<Material> materialIds; // List of Material IDs associated with the furnace
 
-    public FurnaceDTO(Furnace furnace) {
+    public FurnaceDto(Furnace furnace) {
         this.id = furnace.getId();
         this.type = furnace.getType();
         this.projectId = furnace.getProject().getId();

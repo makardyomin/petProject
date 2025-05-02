@@ -2,7 +2,8 @@ package com.example.petproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,12 @@ public class Material {
 
     @Column
     private String name;
+
+    @Column
+    private Long cost;
+
+    @Column
+    private String thermalInsulation;
 
     @ManyToMany(mappedBy = "materialIds")
     @JsonIgnore

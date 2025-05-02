@@ -1,47 +1,70 @@
 package com.example.petproject.service;
 
-import com.example.petproject.model.Project;
-import com.example.petproject.dto.ProjectDTO;
+import com.example.petproject.dto.ProjectDto;
+import com.example.petproject.utils.BadRequestException;
 import com.example.petproject.mappers.ProjectMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.petproject.model.Project;
 import com.example.petproject.repository.ProjectRepository;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ProjectService {
-
     @Autowired
     private ProjectRepository projectRepository;
 
-    public List<ProjectDTO> getAllProjects() {
+    public List<ProjectDto> getAllProjects() {
         return projectRepository.findAll().stream()
-                .map(ProjectMapper::toDTO)
+                .map(ProjectMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public ProjectDTO getProjectById(Long id) {
+    public ProjectDto getProjectById(Long id) {
+        if (id == null) {
+            throw new BadRequestException("Project id must not be null");
+        }
         return projectRepository.findById(id)
-                .map(ProjectMapper::toDTO)
+                .map(ProjectMapper::toDto)
                 .orElseThrow(() -> new RuntimeException("Project not found with id " + id));
     }
 
-    public ProjectDTO createProject(ProjectDTO projectDTO) {
-        Project project = ProjectMapper.toEntity(projectDTO);
+    public ProjectDto createProject(ProjectDto projectDto) {
+        if (projectDto == null) {
+            throw new BadRequestException("Project data must not be null");
+        }
+        if (projectDto.getName() == null || projectDto.getName().isEmpty()) {
+            throw new BadRequestException("Project name must not be null or empty");
+        }
+        Project project = ProjectMapper.toEntity(projectDto);
         Project savedProject = projectRepository.save(project);
-        return ProjectMapper.toDTO(savedProject);
+        return ProjectMapper.toDto(savedProject);
     }
 
-    public ProjectDTO updateProject(Long id, ProjectDTO projectDTO) {
+    public ProjectDto updateProject(Long id, ProjectDto projectDto) {
+        if (id == null) {
+            throw new BadRequestException("Project id must not be null");
+        }
+        if (projectDto == null) {
+            throw new BadRequestException("Project data must not be null");
+        }
+        if (projectDto.getName() == null || projectDto.getName().isEmpty()) {
+            throw new BadRequestException("Project name must not be null or empty");
+        }
         return projectRepository.findById(id).map(project -> {
-            project.setName(projectDTO.getName());
+            project.setName(projectDto.getName());
             Project updatedProject = projectRepository.save(project);
-            return ProjectMapper.toDTO(updatedProject);
+            return ProjectMapper.toDto(updatedProject);
         }).orElseThrow(() -> new RuntimeException("Project not found with id " + id));
     }
 
     public void deleteProject(Long id) {
+        if (id == null) {
+            throw new BadRequestException("Project id must not be null");
+        }
         projectRepository.deleteById(id);
     }
 }

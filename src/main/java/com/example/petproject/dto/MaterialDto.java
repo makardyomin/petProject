@@ -1,18 +1,17 @@
 package com.example.petproject.dto;
 
-import com.example.petproject.model.Material;
 import com.example.petproject.model.Furnace;
+import com.example.petproject.model.Material;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.stream.Collectors;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class MaterialDTO {
-
+public class MaterialDto {
     @Setter
     @Getter
     private Long id;
@@ -20,12 +19,21 @@ public class MaterialDTO {
     @Setter
     @Getter
     private String name;
-    private List<Long> furnaceIds; // List of Furnace IDs associated with the material
+    @Setter
+    private List<Long> furnaceIds;
+    @Setter
+    @Getter
+    private String thermalInsulation;
+    @Setter
+    @Getter
+    private Long cost;
 
     // Constructor that converts Material to MaterialDTO
-    public MaterialDTO(Material material) {
+    public MaterialDto(Material material) {
         this.id = material.getId();
         this.name = material.getName();
+        this.thermalInsulation = material.getThermalInsulation();
+        this.cost = material.getCost();
         // Extract furnace IDs instead of full Furnace objects
         this.furnaceIds = material.getFurnaces()
                 .stream()
@@ -35,9 +43,5 @@ public class MaterialDTO {
 
     public List<Long> getFurnaceIds() {
         return furnaceIds;
-    }
-
-    public void setFurnaceIds(List<Long> furnaceIds) {
-        this.furnaceIds = furnaceIds;
     }
 }

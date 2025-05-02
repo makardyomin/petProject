@@ -1,7 +1,9 @@
 package com.example.petproject.controller;
 
-import com.example.petproject.dto.FurnaceDTO;
+import com.example.petproject.dto.FurnaceDto;
 import com.example.petproject.service.FurnaceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,31 +17,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/furnaces")
+@Tag(name = "Печи", description = "Управление печями")
 public class FurnacesController {
-
     @Autowired
     private FurnaceService furnaceService;
 
+    @Operation(summary = "Получить список всех печей")
     @GetMapping
-    public List<FurnaceDTO> getAllFurnaces() {
+    public List<FurnaceDto> getAllFurnaces() {
         return furnaceService.getAllFurnaces();
     }
 
+    @Operation(summary = "Получить печь по id")
     @GetMapping("/{id}")
-    public FurnaceDTO getFurnaceById(@PathVariable Long id) {
+    public FurnaceDto getFurnaceById(@PathVariable Long id) {
         return furnaceService.getFurnaceById(id);
     }
 
+    @Operation(summary = "Создать новую печь")
     @PostMapping
-    public FurnaceDTO createFurnace(@RequestBody FurnaceDTO furnaceDTO) {
-        return furnaceService.createFurnace(furnaceDTO);
+    public FurnaceDto createFurnace(@RequestBody FurnaceDto furnaceDto) {
+        return furnaceService.createFurnace(furnaceDto);
     }
 
+    @Operation(summary = "Обновить печь по id")
     @PutMapping("/{id}")
-    public FurnaceDTO updateFurnace(@PathVariable Long id, @RequestBody FurnaceDTO furnaceDTO) {
-        return furnaceService.updateFurnace(id, furnaceDTO);
+    public FurnaceDto updateFurnace(@PathVariable Long id, @RequestBody FurnaceDto furnaceDto) {
+        return furnaceService.updateFurnace(id, furnaceDto);
     }
 
+    @Operation(summary = "Удалить печь по id")
     @DeleteMapping("/{id}")
     public void deleteFurnace(@PathVariable Long id) {
         furnaceService.deleteFurnace(id);

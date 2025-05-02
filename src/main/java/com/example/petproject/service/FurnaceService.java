@@ -1,17 +1,20 @@
 package com.example.petproject.service;
 
-import com.example.petproject.model.Furnace;
-import com.example.petproject.dto.FurnaceDTO;
+import com.example.petproject.dto.FurnaceDto;
+import com.example.petproject.utils.BadRequestException;
 import com.example.petproject.mappers.FurnaceMapper;
-import com.example.petproject.repository.ProjectRepository;
-import com.example.petproject.repository.MaterialRepository;
+import com.example.petproject.model.Furnace;
 import com.example.petproject.model.Project;
 import com.example.petproject.repository.FurnaceRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.petproject.repository.MaterialRepository;
+import com.example.petproject.repository.ProjectRepository;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class FurnaceService {
 
@@ -24,40 +27,59 @@ public class FurnaceService {
     @Autowired
     private MaterialRepository materialRepository;
 
-    public List<FurnaceDTO> getAllFurnaces() {
+    public List<FurnaceDto> getAllFurnaces() {
         return furnaceRepository.findAll().stream()
-                .map(FurnaceMapper::toDTO)
+                .map(FurnaceMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public FurnaceDTO getFurnaceById(Long id) {
+    public FurnaceDto getFurnaceById(Long id) {
+        if (id == null) {
+            throw new BadRequestException("Furnace id must not be null");
+        }
         return furnaceRepository.findById(id)
-                .map(FurnaceMapper::toDTO)
+                .map(FurnaceMapper::toDto)
                 .orElseThrow(() -> new RuntimeException("Furnace not found with id " + id));
     }
 
-    public FurnaceDTO createFurnace(FurnaceDTO furnaceDTO) {
-        Furnace furnace = FurnaceMapper.toEntity(furnaceDTO);
+    public FurnaceDto createFurnace(FurnaceDto furnaceDto) {
+        if (furnaceDto == null) {
+            throw new BadRequestException("Furnace data must not be null");
+        }
+        if (furnaceDto.getType() == null || furnaceDto.getType().isEmpty()) {
+            throw new BadRequestException("Furnace type must not be null or empty");
+        }
+        Furnace furnace = FurnaceMapper.toEntity(furnaceDto);
         Furnace savedFurnace = furnaceRepository.save(furnace);
-        return FurnaceMapper.toDTO(savedFurnace);
+        return FurnaceMapper.toDto(savedFurnace);
     }
 
-    public FurnaceDTO updateFurnace(Long id, FurnaceDTO furnaceDTO) {
+    public FurnaceDto updateFurnace(Long id, FurnaceDto furnaceDto) {
+        if (id == null) {
+            throw new BadRequestException("Furnace id must not be null");
+        }
+        if (furnaceDto == null) {
+            throw new BadRequestException("Furnace data must not be null");
+        }
+        if (furnaceDto.getType() == null || furnaceDto.getType().isEmpty()) {
+            throw new BadRequestException("Furnace type must not be null or empty");
+        }
         return furnaceRepository.findById(id).map(furnace -> {
-            furnace.setType(furnaceDTO.getType());
-
-            // Update associated project
-            if (furnaceDTO.getProjectId() != null) {
-                Project project = projectRepository.findById(furnaceDTO.getProjectId())
-                        .orElseThrow(() -> new RuntimeException("Project not found with id " + furnaceDTO.getProjectId()));
+            furnace.setType(furnaceDto.getType());
+            if (furnaceDto.getProjectId() != null) {
+                Project project = projectRepository.findById(furnaceDto.getProjectId())
+                        .orElseThrow(() -> new RuntimeException("Project not found with id " + furnaceDto.getProjectId()));
                 furnace.setProject(project);
             }
             Furnace updatedFurnace = furnaceRepository.save(furnace);
-            return FurnaceMapper.toDTO(updatedFurnace);
+            return FurnaceMapper.toDto(updatedFurnace);
         }).orElseThrow(() -> new RuntimeException("Furnace not found with id " + id));
     }
 
     public void deleteFurnace(Long id) {
+        if (id == null) {
+            throw new BadRequestException("Furnace id must not be null");
+        }
         furnaceRepository.deleteById(id);
     }
 }
