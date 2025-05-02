@@ -1,13 +1,13 @@
 package com.example.petproject.service;
 
 import com.example.petproject.dto.FurnaceDto;
-import com.example.petproject.utils.BadRequestException;
 import com.example.petproject.mappers.FurnaceMapper;
 import com.example.petproject.model.Furnace;
 import com.example.petproject.model.Project;
 import com.example.petproject.repository.FurnaceRepository;
 import com.example.petproject.repository.MaterialRepository;
 import com.example.petproject.repository.ProjectRepository;
+import com.example.petproject.utils.BadRequestException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class FurnaceService {
-
     @Autowired
     private FurnaceRepository furnaceRepository;
 
@@ -68,7 +67,8 @@ public class FurnaceService {
             furnace.setType(furnaceDto.getType());
             if (furnaceDto.getProjectId() != null) {
                 Project project = projectRepository.findById(furnaceDto.getProjectId())
-                        .orElseThrow(() -> new RuntimeException("Project not found with id " + furnaceDto.getProjectId()));
+                        .orElseThrow(() -> new RuntimeException("Project not found with id " +
+                                furnaceDto.getProjectId()));
                 furnace.setProject(project);
             }
             Furnace updatedFurnace = furnaceRepository.save(furnace);

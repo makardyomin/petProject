@@ -1,10 +1,10 @@
 package com.example.petproject.service;
 
 import com.example.petproject.dto.ProjectDto;
-import com.example.petproject.utils.BadRequestException;
 import com.example.petproject.mappers.ProjectMapper;
 import com.example.petproject.model.Project;
 import com.example.petproject.repository.ProjectRepository;
+import com.example.petproject.utils.BadRequestException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
