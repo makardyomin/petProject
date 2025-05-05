@@ -6,6 +6,7 @@ import com.example.petproject.dto.LogTask;
 import com.example.petproject.enums.LogTaskStatus;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,13 +34,13 @@ public class LogFileProcessor {
 
             List<Path> logFiles = new ArrayList<>();
             for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
-                Path path = Paths.get("logs/vinyltracker-" + date.format(formatter) + ".log");
+                Path path = Paths.get("logs/app-" + date.format(formatter) + ".log");
                 if (Files.exists(path)) {
                     logFiles.add(path);
                 }
             }
             sleep(90000);
-            if (logFiles.isEmpty()) throw new FileNotFoundException("Логи за период не найдены");
+            if (logFiles.isEmpty()) throw new RuntimeException("Логи за период не найдены");
 
             Path mergedPath = Paths.get("logs/generated-log-" + taskId + ".log");
             try (BufferedWriter writer = Files.newBufferedWriter(mergedPath)) {
@@ -50,11 +51,13 @@ public class LogFileProcessor {
                         writer.newLine();
                     }
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
             task.setStatus(LogTaskStatus.SUCCESS);
             task.setFilePath(mergedPath.toString());
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             task.setStatus(LogTaskStatus.FAILED);
             task.setError(e.getMessage());
             log.error("[ASYNC] Ошибка генерации логов по диапазону: {}", e.getMessage());
